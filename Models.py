@@ -6,10 +6,10 @@ from datetime import datetime
 class User(Base):
     __tablename__="users"
 
-    user_id=Column(Integer,primary_key=True,index=True,nullable=False)
-    username=Column(String,unique=True)
-    password=Column(String)
-    email=Column(String,unique=True)
+    user_id=Column(String,primary_key=True,index=True,nullable=False)
+    username=Column(String(50),unique=True)
+    password=Column(String(50))
+    email=Column(String(50),unique=True)
     created_at=Column(DateTime,default=datetime.now)
 
     blog=relationship("Blogs",back_populates="author")
@@ -25,7 +25,7 @@ class Blogs(Base):
     updated_at=Column(DateTime,default=datetime.now,index=True)
 
     author=relationship("User",back_populates="blog")
-    
+
 
 
 
