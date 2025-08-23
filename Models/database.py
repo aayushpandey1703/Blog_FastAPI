@@ -6,6 +6,14 @@ db_engine=create_engine(DATABASE_URL)
 db_session=sessionmaker(autocommit=False, autoflush=False, bind=db_engine)
 Base=declarative_base()
 
+def get_db():
+    try:
+        db=db_session()
+        yield db
+    finally:
+        db.close()
+
+
 
 
 

@@ -11,6 +11,10 @@ class UserRegister(BaseModel):
     email:EmailStr
 
     class Config:
+        fields={
+            "password":{"exclude":True},
+            "confirm_password":{"exclude":True}
+            }
         from_attribute=True
 
     @field_validator("confirm_password")
@@ -21,8 +25,20 @@ class UserRegister(BaseModel):
         return confirm_pass
 
 class UserLogin(BaseModel):
-    pass
+    email:EmailStr,
+    password:str
+
+    class Config:
+        fields:{
+            "password":{"exclude":True}
+            }
+        from_attribute=True
     
 class BlogBase(BaseModel):
-    pass
+    blog_id: int=str(uuid.uuid4()),
+    title:str,
+    content:str
+
+    class Config:
+        from_attribute=True
 
