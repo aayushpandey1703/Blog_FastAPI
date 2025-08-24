@@ -1,9 +1,8 @@
 from fastapi import FastAPI
-from Models.User import User
-from Models.Blog import Blog
+from Routers import users
+from Models.database import Base,db_engine 
 
 app=FastAPI()
+Base.metadata.create_all(bind=db_engine)
 
-@app.get("/")
-def index():
-    return {"application":"started"}
+app.include_router(users.router)
