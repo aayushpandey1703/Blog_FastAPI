@@ -2,8 +2,16 @@ from pydantic import BaseModel,Field
 from datetime import datetime
 import uuid
 
-class Blog(BaseModel):
-    blog_id:str = Field(default_factory=lambda: str(uuid.uuid4()))
+class BlogRequest(BaseModel):
+    title:str | None=None
+    content:str | None=None
+    created_by:str | None=None
+    
+    class Config:
+        from_attribute=True
+
+class BlogResponse(BaseModel):
+    blog_id:str
     title:str
     content:str
     created_by:str | None=None
@@ -11,4 +19,3 @@ class Blog(BaseModel):
     
     class Config:
         from_attribute=True
-    

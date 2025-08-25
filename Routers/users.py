@@ -14,7 +14,7 @@ def get_users(db:Session=Depends(database.get_db)):
     if len(users)==0:
         raise HTTPException(status_code=404, detail="no users")
     return users    
-
+ 
 @router.post("/add_user",response_model=User_schema)
 def add_user(user_payload:UserRequest,db: Session=Depends(database.get_db)):
     user_dict=user_payload.model_dump(exclude={"confirm_password"})
