@@ -1,3 +1,6 @@
 fastapi
 uvicorn
 sqlalchemy
+python-jose[cyptography]
+passlib[bcrypt]
+python-multipart
