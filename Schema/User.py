@@ -15,20 +15,10 @@ class UserRequest(BaseModel):
             raise ValueError("Confirm password and password mismatch")
         return self
 
-
-
-
 class UserResponse(BaseModel):
     user_id:int
     email:str
     username:str
-
-    class Config:
-        from_attribute=True
-
-class loginSchema(BaseModel):
-    username:str
-    password:str
 
     class Config:
         from_attribute=True

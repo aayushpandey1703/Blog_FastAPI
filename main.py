@@ -1,8 +1,8 @@
 from fastapi import FastAPI
+from Models.database import Base,db_engine 
 from Routers import users
 from Routers import blogs
 from Routers import auth
-from Models.database import Base,db_engine 
 
 app=FastAPI()
 ## create tables

@@ -1,8 +1,10 @@
 from fastapi import APIRouter,Depends,HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from Schema.Blog import BlogResponse as blog_response,BlogRequest
 from Models.database import get_db
 from Models.Blog import Blog as blog_db
+from Routers.auth import get_user_from_header_token
 
 blog_router=APIRouter(prefix="/blog")
 
@@ -45,3 +47,13 @@ def delete_blog(blog_id:str, db:Session=Depends(get_db)):
     db.commit()
     
     return blogdb
+
+
+@blog_router.delete("/deleteall")
+def del_all(db:Session=Depends(get_db),username=Depends(get_user_from_header_token)):
+    db.execute(text("Delete from blog;"))
+    db.commit()
+    return {
+        "Status":"Success",
+        "detail":"All users deleted"
+    }

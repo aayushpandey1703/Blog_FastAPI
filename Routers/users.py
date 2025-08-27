@@ -1,9 +1,10 @@
 from fastapi import APIRouter,Depends,HTTPException
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from Models import database
 from Models.User import User as user_model
 from Models.Blog import Blog
-from Schema.User import UserResponse as User_schema,UserRequest,loginSchema
+from Schema.User import UserResponse as User_schema,UserRequest
 from passlib.context import CryptContext
 from Routers.auth import get_user_from_header_token
 
@@ -20,8 +21,9 @@ def get_users(db:Session=Depends(database.get_db),loggedUser:dict=Depends(get_us
     return users    
  
 @router.post("/add_user",response_model=User_schema)
-def add_user(user_payload:UserRequest,db: Session=Depends(database.get_db)):
+def add_user(user_payload:UserRequest,db: Session=Depends(database.get_db),username:dict=Depends(get_user_from_header_token)):
     try:
+        print(username)
         user_dict=user_payload.model_dump(exclude={"confirm_password"})
         hash_password=pwd_context.hash(user_dict["password"])
         user_dict["password"]=hash_password
@@ -33,7 +35,7 @@ def add_user(user_payload:UserRequest,db: Session=Depends(database.get_db)):
         return user_db
     except Exception as e:
         print(str(e))
-        raise HTTPException(status_code=500, detail="Something went wrong")
+        raise HTTPException(status_code=500, detail=f"Something went wrong while adding user {e}")
 
 @router.put("/update_user/{user_id}",response_model=User_schema)
 def update_user(user_payload:UserRequest, user_id:int, db:Session=Depends(database.get_db)):
@@ -56,3 +58,13 @@ def del_user(user_id:int,db:Session=Depends(database.get_db)):
     db.delete(user)
     db.commit()
     return user
+
+@router.delete("/deleteall")
+def del_all(db:Session=Depends(database.get_db),username=Depends(get_user_from_header_token)):
+    # db.execute(text("Delete from user where user_id != 2;"))
+    db.query(user_model).filter(user_model.user_id!=2).delete()
+    db.commit()
+    return {
+        "Status":"Success",
+        "detail":"All users deleted"
+    }

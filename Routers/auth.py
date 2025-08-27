@@ -3,7 +3,6 @@ from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
 from Models.database import get_db
 from Models.User import User
-from Schema.User import loginSchema
 from datetime import datetime,timedelta
 from jose import jwt, JWTError
 from utils.auth import SECRET_KEY,ALGORITHM,ACCESS_TOKEN_EXPIRE_MINUTES
@@ -39,6 +38,8 @@ def get_user_from_header_token(token:str=Depends(oauth2_scheme), db:Session=Depe
     except JWTError as e:
         print(e)
         raise HTTPException(status_code=401, detail="Could not validate credentials")
+    except Exception as e:
+        raise HTTPException(status_code=401, detail="Something went wrong")
 
 
 
