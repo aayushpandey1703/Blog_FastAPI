@@ -1,0 +1,15 @@
+{
+    "SourceConfiguration": {
+      "AuthenticationConfiguration": {
+        "AccessRoleArn": "arn:aws:iam::864112542910:role/AppRunnerECRAccessRole"
+      },
+      "ImageRepository": {
+        "ImageIdentifier": "864112542910.dkr.ecr.ap-south-1.amazonaws.com/myblog_fastapi:latest",
+        "ImageRepositoryType": "ECR",
+        "ImageConfiguration": {
+          "Port": "8000"
+        }
+      }
+    }
+  }
+  
